@@ -1,0 +1,9 @@
+{
+  "name": "sliding-window-counter",
+  "version": "0.0.0",
+  "repository": "git://github.com/mafintosh/sliding-window-counter.git",
+  "description": "Count stuff within a time interval e.g. how many users logged in the last hour?",
+  "dependencies": {
+    "cyclist": "~0.2.2"
+  }
+}
