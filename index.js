@@ -2,41 +2,35 @@ var cyclist = require('cyclist');
 
 var counter = function(time, buckets) {
 	if (typeof time === 'object') return counter(time.time, time.buckets);
-	if (!buckets) return counter(time, []);
+	if (!buckets) buckets = [];
 
-	var count = Math.ceil(Math.log(time) / Math.log(2));
-	if (buckets.length) count = buckets.length;
-
-	var interval = Math.max((time / count) | 0, 250);
-	var list = cyclist(count+1);
+	var len = buckets.length ? buckets.length : Math.ceil(Math.log(time) / Math.log(2));
+	var interval = Math.max((time / len) | 0, 250);
+	var list = cyclist(len+1);
 	var ptr = 0;
-	var cnt = 0;
 
-	(buckets||[]).forEach(function(n, i) {
-		list.put(i, n);
-		ptr++;
+	buckets.forEach(function(n) {
+		list.put(ptr++, n);
 	});
 
+	var head = list.get(ptr-1) || 0;
 	var timer = setInterval(function() {
-		ptr = list.put(++ptr, cnt);
+		ptr = list.put(++ptr, head);
 	}, interval);
 
 	if (timer.unref) timer.unref();
 
 	var res = function(inc) {
-		if (inc) list.put(ptr, cnt += inc);
-		return list.get(ptr) - (list.get(ptr-count) || 0);
+		if (inc) list.put(ptr, head += inc);
+		return list.get(ptr) - (list.get(ptr-len) || 0);
 	};
+
 	res.toJSON = function() {
 		var arr = [];
-		for (var i=0; i<count; i++) {
-			arr[i] = list.get(i) || 0;
-		}
-		return {
-			time: time,
-			buckets: arr
-		}
+		for (var i = len-1; i >= 0; i--) arr[len-1-i] = list.get(ptr-i) || 0;
+		return {time:time, buckets:arr};
 	};
+
 	return res;
 };
 
