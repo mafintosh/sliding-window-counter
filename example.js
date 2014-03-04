@@ -1,3 +1,5 @@
+// TODO: migrate to test case
+
 var counter = require('./');
 var cnt = counter(10000);
 
@@ -16,10 +18,5 @@ setInterval(function() {
 }, 1000);
 
 setInterval(function() {
-	var data = cnt.toJSON();
-	var cnt2 = counter(data);
-	cnt(1);
-	cnt2(1);
-	console.log(data.buckets);
-	console.log(cnt2.toJSON().buckets);
+	cnt = counter(cnt.toJSON());
 }, 4000);
