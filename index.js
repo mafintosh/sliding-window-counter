@@ -10,7 +10,7 @@ var counter = function(time, buckets) {
 	var ptr = 0;
 
 	buckets.forEach(function(n) {
-		list.put(ptr++, n);
+		list.put(++ptr, n);
 	});
 
 	var head = list.get(ptr-1) || 0;
