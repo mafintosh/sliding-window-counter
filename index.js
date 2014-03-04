@@ -27,8 +27,8 @@ var counter = function(time, buckets) {
 
 	res.toJSON = function() {
 		var arr = [];
-		for (var i = len-1; i >= 0; i--) arr[len-1-i] = list.get(ptr-i) || 0;
-		return {time:time, buckets:arr};
+		for (var i = 0; i < len; i++) arr[i] = list.get(ptr-i) || 0;
+		return {time:time, buckets:arr.reverse()};
 	};
 
 	return res;
