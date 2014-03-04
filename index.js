@@ -13,7 +13,7 @@ var counter = function(time, buckets) {
 		list.put(++ptr, n);
 	});
 
-	var head = list.get(ptr-1) || 0;
+	var head = list.get(ptr) || 0;
 	var timer = setInterval(function() {
 		ptr = list.put(++ptr, head);
 	}, interval);
